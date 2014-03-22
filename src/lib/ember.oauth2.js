@@ -54,7 +54,7 @@
       /*
        * Open authorize window if configuration is correct
        */
-      authorize: function() {
+      authorize: function(redirect) {
         if (!this.providerId) throw new Error('No provider id given.');
         if (!this.clientId) throw new Error('No client id given.');
         if (!this.authBaseUri) throw new Error('No auth base uri given.');
@@ -62,8 +62,12 @@
         var authorizeUri = this.authUri();
         this.clearStates();
         this.saveState(this.state, this.requestObj());
-        var dialog = window.open(authorizeUri, 'Authorize', 'height=600, width=450');
-        if (window.focus) dialog.focus();
+        if (redirect) {
+          window.location = authorizeUri;
+        } else {
+          var dialog = window.open(authorizeUri, 'Authorize', 'height=600, width=450');
+          if (window.focus) dialog.focus();
+        }
       },
 
       authSuccess: function(params) {
